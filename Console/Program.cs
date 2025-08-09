@@ -119,6 +119,8 @@ namespace EpicAuth
                     break; // no point in this other than to not get error from IDE
             }
 
+            autoUpdate();
+
             if (!EpicAuthApp.response.success)
             {
                 Console.WriteLine("\n Status: " + EpicAuthApp.response.message);

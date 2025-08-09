@@ -321,7 +321,11 @@ namespace EpicAuth
 
                 load_response_struct(json);
                 if (json.success)
-                    load_user_data(json.info);
+                  { load_user_data(json.info); }
+                else if (json.message == "invalidver")
+                {
+                    app_data.downloadLink = json.download;
+                }
             }
             else
             {
@@ -385,7 +389,11 @@ namespace EpicAuth
 
                 load_response_struct(json);
                 if (json.success)
-                    load_user_data(json.info);
+                   { load_user_data(json.info); }
+                else if (json.message == "invalidver")
+                {
+                    app_data.downloadLink = json.download;
+                }
             }
             else
             {
@@ -631,7 +639,11 @@ namespace EpicAuth
 
                 load_response_struct(json);
                 if (json.success)
-                    load_user_data(json.info);
+                   { load_user_data(json.info); }
+                else if (json.message == "invalidver")
+                {
+                    app_data.downloadLink = json.download;
+                }
             }
             else
             {
