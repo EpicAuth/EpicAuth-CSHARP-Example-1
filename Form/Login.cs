@@ -18,11 +18,11 @@ namespace EpicAuth
         */
 
         public static api EpicAuthApp = new api(
-             name: "", // App name
-             ownerid: "", // Account ID
-             version: "1" // Application version. Used for automatic downloads see video here https://www.youtube.com/watch?v=kW195PLCBKs
-                            //path: @"Your_Path_Here" // (OPTIONAL) see tutorial here https://www.youtube.com/watch?v=I9rxt821gMk&t=1s
-         );
+            name: "", // App name
+            ownerid: "", // Account ID
+            version: "" // Application version. Used for automatic downloads see video here https://www.youtube.com/watch?v=kW195PLCBKs
+                           //path: @"Your_Path_Here" // (OPTIONAL) see tutorial here https://www.youtube.com/watch?v=I9rxt821gMk&t=1s
+        );
 
         public Login()
         {
@@ -130,6 +130,48 @@ namespace EpicAuth
             }
             else
                 MessageBox.Show("Status: " + EpicAuthApp.response.message);
+            #region Auto Update
+            if (EpicAuthApp.response.message == "invalidver")
+            {
+                if (!string.IsNullOrEmpty(EpicAuthApp.app_data.downloadLink))
+                {
+                    DialogResult dialogResult = MessageBox.Show("Yes to open file in browser\nNo to download file automatically", "Auto update", MessageBoxButtons.YesNo);
+                    switch (dialogResult)
+                    {
+                        case DialogResult.Yes:
+                            Process.Start(EpicAuthApp.app_data.downloadLink);
+                            Environment.Exit(0);
+                            break;
+                        case DialogResult.No:
+                            WebClient webClient = new WebClient();
+                            string destFile = Application.ExecutablePath;
+
+                            string rand = random_string();
+
+                            destFile = destFile.Replace(".exe", $"-{rand}.exe");
+                            webClient.DownloadFile(EpicAuthApp.app_data.downloadLink, destFile);
+
+                            Process.Start(destFile);
+                            Process.Start(new ProcessStartInfo()
+                            {
+                                Arguments = "/C choice /C Y /N /D Y /T 3 & Del \"" + Application.ExecutablePath + "\"",
+                                WindowStyle = ProcessWindowStyle.Hidden,
+                                CreateNoWindow = true,
+                                FileName = "cmd.exe"
+                            });
+                            Environment.Exit(0);
+
+                            break;
+                        default:
+                            MessageBox.Show("Invalid option");
+                            Environment.Exit(0);
+                            break;
+                    }
+                }
+                MessageBox.Show("Version of this program does not match the one online. Furthermore, the download link online isn't set. You will need to manually obtain the download link from the developer");
+                Environment.Exit(0);
+            }
+            #endregion
         }
 
         private async void registerBtn_Click(object sender, EventArgs e)
@@ -162,6 +204,48 @@ namespace EpicAuth
             }
             else
                MessageBox.Show("Status: " + EpicAuthApp.response.message);
+            #region Auto Update
+            if (EpicAuthApp.response.message == "invalidver")
+            {
+                if (!string.IsNullOrEmpty(EpicAuthApp.app_data.downloadLink))
+                {
+                    DialogResult dialogResult = MessageBox.Show("Yes to open file in browser\nNo to download file automatically", "Auto update", MessageBoxButtons.YesNo);
+                    switch (dialogResult)
+                    {
+                        case DialogResult.Yes:
+                            Process.Start(EpicAuthApp.app_data.downloadLink);
+                            Environment.Exit(0);
+                            break;
+                        case DialogResult.No:
+                            WebClient webClient = new WebClient();
+                            string destFile = Application.ExecutablePath;
+
+                            string rand = random_string();
+
+                            destFile = destFile.Replace(".exe", $"-{rand}.exe");
+                            webClient.DownloadFile(EpicAuthApp.app_data.downloadLink, destFile);
+
+                            Process.Start(destFile);
+                            Process.Start(new ProcessStartInfo()
+                            {
+                                Arguments = "/C choice /C Y /N /D Y /T 3 & Del \"" + Application.ExecutablePath + "\"",
+                                WindowStyle = ProcessWindowStyle.Hidden,
+                                CreateNoWindow = true,
+                                FileName = "cmd.exe"
+                            });
+                            Environment.Exit(0);
+
+                            break;
+                        default:
+                            MessageBox.Show("Invalid option");
+                            Environment.Exit(0);
+                            break;
+                    }
+                }
+                MessageBox.Show("Version of this program does not match the one online. Furthermore, the download link online isn't set. You will need to manually obtain the download link from the developer");
+                Environment.Exit(0);
+            }
+            #endregion
         }
 
         private void closeBtn_Click(object sender, EventArgs e)
